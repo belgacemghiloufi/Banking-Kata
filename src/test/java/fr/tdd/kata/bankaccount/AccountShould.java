@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -32,6 +33,8 @@ public class AccountShould {
 	public void 
 	increase_balance_when_deposit_is_made() {
 		BigDecimal amount = new BigDecimal(100.00);
+		List<Transaction> transactions = List.of(new Transaction(TODAY, amount, Operation.DEPOSIT));
+		when(transactionRepository.getTransactions()).thenReturn(transactions);
 		account.deposit(amount);
 		verify(transactionRepository).addDepositTransaction(amount);
 		assertThat(account.getBalance(), is(amount));
@@ -57,6 +60,8 @@ public class AccountShould {
 		BigDecimal depositAmount = new BigDecimal(100.00);
 		BigDecimal withdrawAmount = new BigDecimal(50.00);
 		BigDecimal leftAmount = new BigDecimal(50.00);
+		List<Transaction> transactions = List.of(new Transaction(TODAY, depositAmount, Operation.DEPOSIT), new Transaction(TODAY, withdrawAmount, Operation.WITHDRAWAL));
+		when(transactionRepository.getTransactions()).thenReturn(transactions);
 		account.deposit(depositAmount);
 		account.withdraw(withdrawAmount);
 		verify(transactionRepository).addWithdrawTransaction(withdrawAmount);

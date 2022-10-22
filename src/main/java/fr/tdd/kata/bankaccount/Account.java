@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 public class Account {
 
-	private BigDecimal balance = BigDecimal.ZERO;
 	private StatementPrinter statementPrinter;
 	private TransactionRepository transactionRepository;
 
@@ -16,21 +15,23 @@ public class Account {
 	public void deposit(BigDecimal amount) {
 		if (amount.signum() == -1)
 			throw new IllegalArgumentException(String.format("Should not deposit a negative amount: %s", amount));
-		balance = balance.add(amount);
 		transactionRepository.addDepositTransaction(amount);
 	}
 
 	public BigDecimal getBalance() {
+		BigDecimal  balance = transactionRepository.getTransactions()
+										  .stream()
+										  .map(transaction -> (transaction.getOperation() == Operation.DEPOSIT) ? transaction.getAmount() : transaction.getAmount().negate())
+										  .reduce(BigDecimal.ZERO, BigDecimal::add);
 		return balance;
 	}
 
 	public void withdraw(BigDecimal amount) {
 		if (amount.signum() == -1)
 			throw new IllegalArgumentException(String.format("Should not withdraw a negative amount: %s", amount));
+		BigDecimal  balance = getBalance();
 		if (balance.compareTo(amount) < 0)
-			throw new IllegalArgumentException(
-					String.format("Should not withdraw amount %s more than balance %s", amount, balance));
-		balance = balance.subtract(amount);
+			throw new IllegalArgumentException(String.format("Should not withdraw amount %s more than balance %s", amount, balance));
 		transactionRepository.addWithdrawTransaction(amount);
 	}
 
