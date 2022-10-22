@@ -44,4 +44,14 @@ public class AccountShould {
 		assertThat(account.getBalance(), is(leftAmount));
 	}
 	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void
+	handle_withdrawing_more_than_balance() {
+		BigDecimal depositAmount = new BigDecimal(100.00);
+		BigDecimal withdrawAmount = new BigDecimal(150.00);
+		account.deposit(depositAmount);
+		account.withdraw(withdrawAmount);
+	}
+	
 }
