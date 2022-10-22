@@ -25,6 +25,8 @@ public class Account {
 	}
 
 	public void withdraw(BigDecimal amount) {
+		if (amount.signum() == -1)
+			throw new IllegalArgumentException(String.format("Should not withdraw a negative amount: %s", amount));
 		if (balance.compareTo(amount) < 0)
 			throw new IllegalArgumentException(
 					String.format("Should not withdraw amount %s more than balance %s", amount, balance));
