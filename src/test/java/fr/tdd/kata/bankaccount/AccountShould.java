@@ -2,21 +2,30 @@ package fr.tdd.kata.bankaccount;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccountShould {
 	
+	@Mock private TransactionRepository transactionRepository;
+	@Mock private StatementPrinter statementPrinter;
 	private Account account;
 	
 	@Before
 	public void initialise() {
-		account = new Account();
+		account = new Account(transactionRepository, statementPrinter);
 	}
-	
 	
 	@Test 
 	public void 
@@ -54,4 +63,12 @@ public class AccountShould {
 		account.withdraw(withdrawAmount);
 	}
 	
+	@Test
+	public void
+	print_a_statement_containing_all_transactions() {
+		List<Transaction> transactions = Arrays.asList(new Transaction("22/10/2022",  new BigDecimal(100.00)));
+		given(transactionRepository.getTransactions()).willReturn(transactions);
+		account.printStatement();
+		verify(statementPrinter).print(transactions);
+	}
 }
