@@ -32,6 +32,7 @@ public class AccountShould {
 	increase_balance_when_deposit_is_made() {
 		BigDecimal amount = new BigDecimal(100.00);
 		account.deposit(amount);
+		verify(transactionRepository).addDepositTransaction(amount);
 		assertThat(account.getBalance(), is(amount));
 	}
 	
@@ -50,6 +51,7 @@ public class AccountShould {
 		BigDecimal leftAmount = new BigDecimal(50.00);
 		account.deposit(depositAmount);
 		account.withdraw(withdrawAmount);
+		verify(transactionRepository).addWithdrawTransaction(withdrawAmount);
 		assertThat(account.getBalance(), is(leftAmount));
 	}
 	
