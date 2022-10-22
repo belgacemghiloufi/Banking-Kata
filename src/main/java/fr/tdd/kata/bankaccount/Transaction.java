@@ -6,10 +6,24 @@ public class Transaction {
 
 	private String date;
 	private BigDecimal amount;
+	private Operation operation;
 
-	public Transaction(String date, BigDecimal amount) {
+	public Transaction(String date, BigDecimal amount, Operation operation) {
 		this.date = date;
 		this.amount = amount;
+		this.operation = operation;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public Operation getOperation() {
+		return operation;
 	}
 
 	@Override
@@ -18,6 +32,7 @@ public class Transaction {
 		int result = 1;
 		result = prime * result + ((amount == null) ? 0 : amount.hashCode());
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((operation == null) ? 0 : operation.hashCode());
 		return result;
 	}
 
@@ -45,6 +60,9 @@ public class Transaction {
 				return false;
 			}
 		} else if (!date.equals(other.date)) {
+			return false;
+		}
+		if (operation != other.operation) {
 			return false;
 		}
 		return true;

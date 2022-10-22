@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AccountShould {
 	
+	private static final String TODAY = "22/10/2022";
 	@Mock private TransactionRepository transactionRepository;
 	@Mock private StatementPrinter statementPrinter;
 	private Account account;
@@ -68,7 +69,7 @@ public class AccountShould {
 	@Test
 	public void
 	print_a_statement_containing_all_transactions() {
-		List<Transaction> transactions = Arrays.asList(new Transaction("22/10/2022",  new BigDecimal(100.00)));
+		List<Transaction> transactions = Arrays.asList(new Transaction(TODAY,  new BigDecimal(100.00), Operation.DEPOSIT));
 		given(transactionRepository.getTransactions()).willReturn(transactions);
 		account.printStatement();
 		verify(statementPrinter).print(transactions);

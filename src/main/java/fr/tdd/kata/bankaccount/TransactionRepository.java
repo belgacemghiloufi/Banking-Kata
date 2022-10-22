@@ -19,12 +19,12 @@ public class TransactionRepository {
 	}
 
 	public void addDepositTransaction(BigDecimal amount) {
-		Transaction deposit = new Transaction(dateHelper.getTodayAsString(), amount);
+		Transaction deposit = new Transaction(dateHelper.getTodayAsString(), amount, Operation.DEPOSIT);
 		transactions.add(deposit);
 	}
 
 	public void addWithdrawTransaction(BigDecimal amount) {
-		Transaction withdraw = new Transaction(dateHelper.getTodayAsString(), amount);
+		Transaction withdraw = new Transaction(dateHelper.getTodayAsString(), amount, Operation.WITHDRAWAL);
 		transactions.add(withdraw);
 	}
 

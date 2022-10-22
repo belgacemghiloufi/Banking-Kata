@@ -35,7 +35,8 @@ public class TransactionRepositoryShould {
 		transactionRepository.addDepositTransaction(depositAmount);
 		List<Transaction> transactions = transactionRepository.getTransactions();
 		assertThat(transactions.size(), is(1));
-		assertThat(transactions.get(0), is(transaction(TODAY, depositAmount)));
+		Transaction transaction = transactions.get(0);
+		assertThat(transaction, is(transaction(TODAY, depositAmount, Operation.DEPOSIT)));
 	}
 	
 	@Test
@@ -45,10 +46,10 @@ public class TransactionRepositoryShould {
 		transactionRepository.addWithdrawTransaction(withdrawAmount);
 		List<Transaction> transactions = transactionRepository.getTransactions();
 		assertThat(transactions.size(), is(1));
-		assertThat(transactions.get(0), is(transaction(TODAY, withdrawAmount)));
+		assertThat(transactions.get(0), is(transaction(TODAY, withdrawAmount, Operation.WITHDRAWAL)));
 	}
 
-	private Transaction transaction(String date, BigDecimal depositAmount) {
-		return new Transaction(date, depositAmount);
+	private Transaction transaction(String date, BigDecimal depositAmount, Operation operation) {
+		return new Transaction(date, depositAmount, operation);
 	}
 }
