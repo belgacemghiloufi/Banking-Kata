@@ -26,12 +26,22 @@ public class AccountShould {
 		assertThat(account.getBalance(), is(amount));
 	}
 	
-	
 	@Test(expected = IllegalArgumentException.class) 
 	public void
 	handle_negative_deposit_amount() {
 		BigDecimal negativeAmount = new BigDecimal(-100.00);
 		account.deposit(negativeAmount);
+	}
+	
+	@Test
+	public void
+	decrease_balance_when_withdrawal_is_made() {
+		BigDecimal depositAmount = new BigDecimal(100.00);
+		BigDecimal withdrawAmount = new BigDecimal(50.00);
+		BigDecimal leftAmount = new BigDecimal(50.00);
+		account.deposit(depositAmount);
+		account.withdraw(withdrawAmount);
+		assertThat(account.getBalance(), is(leftAmount));
 	}
 	
 }

@@ -16,4 +16,8 @@ public class Account {
 		return balance;
 	}
 
+	public void withdraw(BigDecimal amount) {
+		balance = balance.subtract(amount);
+	}
+
 }
